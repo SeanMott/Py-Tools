@@ -10,16 +10,20 @@ Generates a skeleton pygame application.
 
 using namespace std;
 
-ofstream writeStream;
-
 bool isMessage = false;
+
+const char* imports[] = { "pygame", "random", "time" };
+#define IMPORT_COUNT 3
+
+//writes the main protion of the file that is the same no matter what.
+void WriteMainBody(ofstream& writeStream);
 
 int main(int argc, char* argv[])
 {
 	//if no args were passed || 1
 	if (argc < 2)
 	{
-		writeStream.open("PygameApp.py");
+		ofstream writeStream("PygameApp.py");
 		if (!writeStream.is_open())
 		{
 			printf("File Error, Type: Impossible || Impossible error found, no args passed yet unable to write file. Check Github for updates and fixes.\n");
@@ -27,8 +31,7 @@ int main(int argc, char* argv[])
 			return -1;
 		}
 
-		writeStream << "import pygame\nimport time\nimport random\n\n#window settings\nWINDOW_WIDTH = 800\nWINDOW_HEIGHT = 600\nclearColor = (0, 128, 128)\n\n"
-"#inits pygame\npygame.init()\nwindow = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))\n\n#game loop\nwindow.fill(clearColor) #clear screen\n\n#game logic\n\npygame.display.flip() #updates screen\ntime.sleep(3)\n\n#clear resources\npygame.quit()";
+		WriteMainBody(writeStream);
 	}
 
 	//if file path was passed || 2
@@ -39,15 +42,15 @@ int main(int argc, char* argv[])
 		if (path[length - 3] != '.' || path[length - 2] != 'p' || path[length - 1] != 'y')
 			path += ".py";
 
-		writeStream.open(path);
+		ofstream writeStream(path);
 		if (!writeStream.is_open())
 		{
 			printf("File Error, Type: Path || File path was given yet unable to write file. Check Github for updates and fixes.\n Filepath: %s\n", path.c_str());
 			cin.get();
 			return -1;
 		}
-		writeStream << "import pygame\nimport time\nimport random\n\n#window settings\nWINDOW_WIDTH = 800\nWINDOW_HEIGHT = 600\nclearColor = (0, 128, 128)\n\n"
-			"#inits pygame\npygame.init()\nwindow = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))\n\n#game loop\nwindow.fill(clearColor) #clear screen\n\n#game logic\n\npygame.display.flip() #updates screen\ntime.sleep(3)\n\n#clear resources\npygame.quit()";
+
+		WriteMainBody(writeStream);
 	}
 
 	//if anything else was passed || 3 or more
@@ -58,7 +61,7 @@ int main(int argc, char* argv[])
 		if (path[length - 3] != '.' || path[length - 2] != 'p' || path[length - 1] != 'y')
 			path += ".py";
 		
-		writeStream.open(path);
+		ofstream writeStream(path);
 		if (!writeStream.is_open())
 		{
 			printf("File Error, Type: Path || File path was given yet unable to write file. Check Github for updates and fixes.\n Filepath: %s\n", path.c_str());
@@ -73,18 +76,21 @@ int main(int argc, char* argv[])
 		//adds lab
 		if (argc >= 3)
 			writeStream << "#ETGG1801-02 " + (argv[3] == nullptr ? "Lab42" : (string)argv[3]) + "\n\n";
-		/*else
-		{
-			writeStream.write("#ETGG1801-02 Lab42\n\n", 20);
-			//printf("No lab name was passed in use less arguments if you don't want it added.\n");
-			//isMessage = true;
-		}*/
 
-		writeStream << "import pygame\nimport time\nimport random\n\n#window settings\nWINDOW_WIDTH = 800\nWINDOW_HEIGHT = 600\nclearColor = (0, 128, 128)\n\n"
-			"#inits pygame\npygame.init()\nwindow = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))\n\n#game loop\nwindow.fill(clearColor) #clear screen\n\n#game logic\n\npygame.display.flip() #updates screen\ntime.sleep(3)\n\n#clear resources\npygame.quit()";
+		WriteMainBody(writeStream);
 	}
 
 	if(isMessage)
 		cin.get();
 	return 0;
+}
+
+void WriteMainBody(ofstream& writeStream)
+{
+	//add imports
+	for (unsigned char i = 0; i < IMPORT_COUNT; i++)
+		writeStream << "import " + (string)imports[i] + '\n';
+
+	writeStream << "\n#window settings\nWINDOW_WIDTH = 800\nWINDOW_HEIGHT = 600\nclearColor = (0, 128, 128)\n\n"
+		"#inits pygame\npygame.init()\nwindow = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))\n\n#game loop\nwindow.fill(clearColor) #clear screen\n\n#game logic\n\npygame.display.flip() #updates screen\ntime.sleep(3)\n\n#clear resources\npygame.quit()";
 }
