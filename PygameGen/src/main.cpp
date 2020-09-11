@@ -92,5 +92,5 @@ void WriteMainBody(ofstream& writeStream)
 		writeStream << "import " + (string)imports[i] + '\n';
 
 	writeStream << "\n#window settings\nWINDOW_WIDTH = 800\nWINDOW_HEIGHT = 600\nclearColor = (0, 128, 128)\n\n"
-		"#inits pygame\npygame.init()\nwindow = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))\n\n#game loop\nwindow.fill(clearColor) #clear screen\n\n#game logic\n\npygame.display.flip() #updates screen\ntime.sleep(3)\n\n#clear resources\npygame.quit()";
+		"#Inits Pygame\npygame.init()\n\n#Load Assets\n\nwindow = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)) #Creates Window\n\n#---GAME LOOP---#\nwindow.fill(clearColor) #Clear Screen\n\n#---GAME LOGIC---#\n\npygame.display.flip() #Updates Screen\ntime.sleep(3)\n\n#---CLEAN UP RESOURCES---#\npygame.quit()";
 }
